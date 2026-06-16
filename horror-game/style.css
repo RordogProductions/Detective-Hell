@@ -1,0 +1,442 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #000;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+#renderCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+/* ── HUD ─────────────────────────────────────────────────── */
+#hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  font-family: 'Special Elite', monospace;
+  color: #ccc;
+}
+
+#top-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.72), transparent);
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+#night-label {
+  font-family: 'Creepster', cursive;
+  font-size: 22px;
+  color: #cc0000;
+  text-shadow: 0 0 14px #ff000066;
+}
+
+#evidence-label { color: #999; }
+
+#crosshair {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  color: rgba(255,255,255,0.45);
+  user-select: none;
+}
+
+#message {
+  position: absolute;
+  top: 58%; left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  color: #cc2200;
+  text-align: center;
+  text-shadow: 0 0 12px #ff000099;
+  opacity: 0;
+  transition: opacity 0.4s;
+  white-space: nowrap;
+}
+#message.visible { opacity: 1; }
+
+#hint {
+  position: absolute;
+  bottom: 14px; right: 20px;
+  font-size: 11px;
+  color: #3a3a3a;
+}
+
+#solve-bar {
+  position: absolute;
+  bottom: 38px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: #d4a843;
+  text-shadow: 0 0 10px #d4a84355;
+  letter-spacing: 2px;
+  animation: flicker 2.4s infinite;
+  pointer-events: none;
+}
+#solve-bar.hidden { display: none; }
+
+/* ── Overlays ─────────────────────────────────────────────── */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.90);
+  pointer-events: all;
+  cursor: pointer;
+  text-align: center;
+  gap: 20px;
+  padding: 40px;
+}
+.overlay.hidden { display: none; }
+
+.overlay-title {
+  font-family: 'Creepster', cursive;
+  font-size: clamp(46px, 9vw, 86px);
+  color: #cc0000;
+  text-shadow: 0 0 28px #ff000077, 0 0 64px #ff000033;
+  letter-spacing: 6px;
+}
+.overlay-title.green {
+  color: #00bb55;
+  text-shadow: 0 0 28px #00ff5577, 0 0 64px #00ff5533;
+}
+
+.overlay-sub {
+  font-size: clamp(14px, 2.2vw, 20px);
+  color: #888;
+  line-height: 2;
+  max-width: 580px;
+}
+.small-text { font-size: 0.8em; color: #555; }
+
+/* Phone screen */
+#phone-glyph {
+  font-size: 62px;
+  animation: ring 0.55s ease-in-out infinite alternate;
+}
+@keyframes ring {
+  from { transform: rotate(-14deg); }
+  to   { transform: rotate(14deg); }
+}
+#phone-who {
+  font-family: 'Creepster', cursive;
+  font-size: clamp(16px, 2.8vw, 26px);
+  color: #cc0000;
+  letter-spacing: 3px;
+}
+
+/* Call screen */
+#call-box {
+  max-width: 540px;
+  width: 100%;
+  background: rgba(14, 6, 6, 0.85);
+  border-left: 3px solid #6b0000;
+  padding: 24px 32px;
+  text-align: left;
+}
+#call-from {
+  font-family: 'Creepster', cursive;
+  font-size: 13px;
+  color: #6b0000;
+  letter-spacing: 4px;
+  margin-bottom: 14px;
+}
+#call-text {
+  font-family: 'Special Elite', monospace;
+  font-size: clamp(13px, 1.8vw, 16px);
+  color: #bbb;
+  line-height: 2;
+  white-space: pre-wrap;
+  min-height: 180px;
+}
+
+/* Night brief */
+#brief-title { margin-bottom: -4px; }
+#brief-body {
+  font-family: 'Special Elite', monospace;
+  font-size: clamp(14px, 2vw, 18px);
+  color: #777;
+  line-height: 2.1;
+  text-align: center;
+  white-space: pre-wrap;
+  max-width: 500px;
+}
+
+/* Clue popup */
+#cp-tag {
+  font-family: 'Creepster', cursive;
+  font-size: 12px;
+  color: #6b0000;
+  letter-spacing: 5px;
+}
+#cp-name {
+  font-family: 'Creepster', cursive;
+  font-size: clamp(24px, 4vw, 40px);
+  color: #d4a843;
+  text-shadow: 0 0 18px #d4a84344;
+}
+#cp-text {
+  font-family: 'Special Elite', monospace;
+  font-size: clamp(13px, 1.8vw, 16px);
+  color: #aaa;
+  line-height: 2;
+  white-space: pre-wrap;
+  max-width: 520px;
+  border-left: 2px solid #2a1a1a;
+  padding-left: 20px;
+  text-align: left;
+}
+
+/* Mystery */
+#mystery-q {
+  font-size: clamp(14px, 2vw, 18px);
+  color: #777;
+  font-style: italic;
+  margin-top: -8px;
+}
+#mystery-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 520px;
+}
+.m-btn {
+  background: rgba(22, 8, 8, 0.85);
+  border: 1px solid #2e0e0e;
+  color: #aaa;
+  font-family: 'Special Elite', monospace;
+  font-size: clamp(13px, 1.7vw, 15px);
+  padding: 14px 20px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  letter-spacing: 0.4px;
+}
+.m-btn:hover {
+  background: rgba(70, 16, 16, 0.95);
+  border-color: #7a0000;
+  color: #eee;
+}
+
+/* Night clear */
+#clear-body {
+  font-size: clamp(13px, 2vw, 18px);
+  color: #666;
+  line-height: 2;
+  max-width: 500px;
+}
+
+/* Pulse / flicker */
+.pulse-text {
+  font-size: 12px;
+  color: #4a4a4a;
+  letter-spacing: 2px;
+  animation: pulse 1.7s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.25; }
+  50%       { opacity: 1; }
+}
+@keyframes flicker {
+  0%, 89%, 91%, 93%, 95%, 100% { opacity: 1; }
+  90%, 92%, 94% { opacity: 0.25; }
+}
+
+/* ── Final cinematic scene ────────────────────────────────────── */
+#final-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  background: #000;
+  display: none;
+}
+#final-scene.visible { display: block; }
+#final-scene canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+#final-overlay {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 1;
+  pointer-events: none;
+}
+#final-caption {
+  position: absolute;
+  bottom: 11%;
+  width: 100%;
+  text-align: center;
+  font-family: 'Special Elite', monospace;
+  font-size: 12px;
+  color: rgba(110,110,110,0.75);
+  letter-spacing: 5px;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  pointer-events: none;
+}
+#final-tbc {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Creepster', cursive;
+  font-size: clamp(38px, 7vw, 74px);
+  color: #111;
+  letter-spacing: 12px;
+  opacity: 0;
+  transition: opacity 1.6s ease;
+  pointer-events: none;
+}
+@keyframes carShake {
+  0%, 100% { transform: translate(0,0) rotate(0deg); }
+  20%  { transform: translate(-6px, 3px) rotate(-0.4deg); }
+  50%  { transform: translate(6px,-3px) rotate(0.4deg); }
+  80%  { transform: translate(-4px, 5px) rotate(-0.2deg); }
+}
+#final-canvas.shake { animation: carShake 0.32s ease-in-out; }
+
+/* ── Jumpscare ────────────────────────────────────────────────── */
+#jumpscare {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+}
+#jumpscare canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+@keyframes jsReveal {
+  0%   { opacity: 0; }
+  5%   { opacity: 1; }
+  100% { opacity: 1; }
+}
+#jumpscare.js-show {
+  animation: jsReveal 0.07s ease-out forwards;
+}
+
+/* ── Home screen ──────────────────────────────────────────────── */
+#home-screen {
+  background: radial-gradient(ellipse at center, #0e0508 0%, #000 65%);
+  cursor: default;
+}
+#home-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  max-width: 620px;
+  width: 100%;
+}
+#home-case {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  color: #3a1010;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  border-top: 1px solid #1e0808;
+  border-bottom: 1px solid #1e0808;
+  padding: 7px 24px;
+  width: 100%;
+  text-align: center;
+}
+#home-title {
+  font-family: 'Creepster', cursive;
+  font-size: clamp(54px, 11vw, 100px);
+  color: #c0392b;
+  text-shadow:
+    0 0 30px #ff000077,
+    0 0 70px #ff000044,
+    0 0 130px #ff000022;
+  line-height: 1.05;
+  letter-spacing: 3px;
+  text-align: center;
+  margin: 0;
+  animation: titleFlicker 5s infinite;
+}
+@keyframes titleFlicker {
+  0%, 88%, 90%, 92%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 30px #ff000077, 0 0 70px #ff000044;
+  }
+  89%, 91% {
+    opacity: 0.80;
+    text-shadow: 0 0 15px #ff000033;
+  }
+}
+#home-location {
+  font-family: 'Special Elite', monospace;
+  font-size: 13px;
+  color: #3a3a3a;
+  letter-spacing: 3px;
+}
+#home-night-badge {
+  font-family: 'Creepster', cursive;
+  font-size: 15px;
+  color: #881111;
+  letter-spacing: 5px;
+  border: 1px solid #3a0808;
+  padding: 5px 18px;
+}
+#home-rule {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #2a0808, transparent);
+}
+#home-tagline {
+  font-family: 'Special Elite', monospace;
+  font-size: clamp(14px, 2vw, 17px);
+  color: #4a4a4a;
+  text-align: center;
+  line-height: 2.2;
+  margin: 0;
+}
+#home-btn {
+  font-family: 'Creepster', cursive;
+  font-size: clamp(17px, 2.6vw, 23px);
+  color: #aa2020;
+  background: transparent;
+  border: 1px solid #441010;
+  padding: 15px 44px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+#home-btn:hover {
+  background: rgba(90, 0, 0, 0.25);
+  border-color: #aa2020;
+  color: #dd3333;
+  box-shadow: 0 0 22px #aa202033, inset 0 0 12px #88000011;
+}
+#home-controls {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  color: #1e1e1e;
+  letter-spacing: 2px;
+  margin-top: 4px;
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A Detective's Hell</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Special+Elite&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <canvas id="renderCanvas" tabindex="0"></canvas>
+
+  <div id="hud">
+
+    <div id="top-bar">
+      <div id="night-label">NIGHT <span id="night-num">1</span></div>
+      <div id="evidence-label">EVIDENCE &thinsp;<span id="clue-count">0</span>&thinsp;/&thinsp;<span id="clue-total">2</span></div>
+    </div>
+
+    <div id="crosshair">+</div>
+    <div id="message"></div>
+    <div id="hint">WASD Move &nbsp;|&nbsp; Mouse Look &nbsp;|&nbsp; [F] Flashlight &nbsp;|&nbsp; [Click] Lock mouse</div>
+    <div id="solve-bar" class="hidden">Leave through the front door</div>
+
+    <!-- Home screen -->
+    <div id="home-screen" class="overlay">
+      <div id="home-inner">
+        <div id="home-case">Case File &nbsp;#4721 &mdash; Classified</div>
+        <h1 id="home-title">A Detective's<br>Hell</h1>
+        <div id="home-location">Hargrove Residence &nbsp;&middot;&nbsp; October 31</div>
+        <div id="home-night-badge" class="hidden">Night <span id="home-night-num">2</span> of 3</div>
+        <div id="home-rule"></div>
+        <p id="home-tagline">A family vanished.<br>Something took their place.</p>
+        <button id="home-btn">Begin Investigation</button>
+        <div id="home-controls">WASD &nbsp;Move &nbsp;&nbsp;&middot;&nbsp;&nbsp; Mouse &nbsp;Look &nbsp;&nbsp;&middot;&nbsp;&nbsp; F &nbsp;Flashlight</div>
+      </div>
+    </div>
+
+    <!-- Phone call -->
+    <div id="phone-screen" class="overlay hidden">
+      <div id="phone-glyph">&#9742;</div>
+      <div id="phone-who">DISPATCH &mdash; INCOMING CALL</div>
+      <div class="pulse-text">Click to answer</div>
+    </div>
+
+    <!-- Call transcript -->
+    <div id="call-screen" class="overlay hidden">
+      <div id="call-box">
+        <div id="call-from">DISPATCH</div>
+        <pre id="call-text"></pre>
+      </div>
+      <div id="call-enter" class="pulse-text hidden">Click to begin Night 1</div>
+    </div>
+
+    <!-- Night briefing -->
+    <div id="night-brief" class="overlay hidden">
+      <div class="overlay-title" id="brief-title"></div>
+      <pre id="brief-body"></pre>
+      <div class="pulse-text">Click to enter</div>
+    </div>
+
+    <!-- Clue popup -->
+    <div id="clue-popup" class="overlay hidden">
+      <div id="cp-tag">EVIDENCE COLLECTED</div>
+      <div id="cp-name"></div>
+      <pre id="cp-text"></pre>
+      <div class="pulse-text" style="margin-top:20px">Click to continue</div>
+    </div>
+
+    <!-- Mystery choices -->
+    <div id="mystery-screen" class="overlay hidden">
+      <div class="overlay-title">CASE FILE</div>
+      <div id="mystery-q">Where is the Hargrove family?</div>
+      <div id="mystery-choices">
+        <button class="m-btn" data-ok="0">They escaped through the back woods before this started</button>
+        <button class="m-btn" data-ok="1">They are locked alive in the basement</button>
+        <button class="m-btn" data-ok="0">The creature killed them &mdash; they are gone</button>
+        <button class="m-btn" data-ok="0">They fled the city &mdash; the house is abandoned</button>
+      </div>
+    </div>
+
+    <!-- Wrong answer -->
+    <div id="wrong-screen" class="overlay hidden">
+      <div class="overlay-title">INCORRECT</div>
+      <div class="overlay-sub">Re-read your evidence.<br><br><span class="small-text">Press R to try again</span></div>
+    </div>
+
+    <!-- Night survived -->
+    <div id="night-clear" class="overlay hidden">
+      <div class="overlay-title green" id="clear-title"></div>
+      <div class="overlay-sub" id="clear-body"></div>
+      <div class="pulse-text">Click to continue</div>
+    </div>
+
+    <!-- Final cinematic scene -->
+    <div id="final-scene">
+      <canvas id="final-canvas"></canvas>
+      <div id="final-overlay"></div>
+      <div id="final-caption"></div>
+      <div id="final-tbc">TO BE CONTINUED.</div>
+    </div>
+
+    <!-- Jumpscare overlay -->
+    <div id="jumpscare" class="hidden">
+      <canvas id="js-canvas"></canvas>
+    </div>
+
+    <!-- Game over -->
+    <div id="gameover" class="overlay hidden">
+      <div class="overlay-title">YOU DIED</div>
+      <div class="overlay-sub">The house claimed another investigator.<br><br><span class="small-text">Press R to retry this night</span></div>
+    </div>
+
+    <!-- Win -->
+    <div id="win-screen" class="overlay hidden">
+      <div class="overlay-title green">CASE CLOSED</div>
+      <div class="overlay-sub">
+        You found them.<br><br>
+        The Hargrove family had been locked in the basement<br>
+        by the entity that claimed the house years ago.<br>
+        They are alive. You got them out.<br><br>
+        <span class="small-text">Press R to play again</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

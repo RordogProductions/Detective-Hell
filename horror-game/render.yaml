@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: horror-game
+    env: static
+    staticPublishPath: .
+    buildCommand: ""
