@@ -2,5 +2,6 @@ services:
   - type: web
     name: horror-game
     env: static
+    rootDir: horror-game
     staticPublishPath: .
     buildCommand: ""
