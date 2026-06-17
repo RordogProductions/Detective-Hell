@@ -1099,7 +1099,7 @@ function beginNight() {
     scene.fogColor          = new BABYLON.Color3(0.01,0.01,0.02);
 
     var amb=new BABYLON.HemisphericLight('amb',new BABYLON.Vector3(0,1,0),scene);
-    amb.intensity=0.035; amb.diffuse=new BABYLON.Color3(0.3,0.25,0.45);
+    amb.intensity=0.08; amb.diffuse=new BABYLON.Color3(0.3,0.25,0.45);
     amb.groundColor=new BABYLON.Color3(0.04,0.03,0.06);
 
     camera=new BABYLON.UniversalCamera('cam',new BABYLON.Vector3(0,1.6,-24),scene);
@@ -1663,7 +1663,7 @@ function beginNight() {
         var l=new BABYLON.PointLight('sc'+x+'_'+z,new BABYLON.Vector3(x,2.8,z),scene);
         l.diffuse=new BABYLON.Color3(0.60,0.28,0.06);
         l.specular=new BABYLON.Color3(0.3,0.12,0.03);
-        l.intensity=0.38; l.range=18;
+        l.intensity=0.55; l.range=22;
         // Bracket
         var bM=new BABYLON.StandardMaterial('scm'+x+z,scene);
         bM.diffuseColor=new BABYLON.Color3(0.08,0.06,0.04);
