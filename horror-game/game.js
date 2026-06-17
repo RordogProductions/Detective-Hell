@@ -1,5 +1,33 @@
 'use strict';
 
+// ── Intro sequence: splash → warning → home ───────────────────────────────────
+(function() {
+    function fadeOut(el, cb) {
+        el.style.transition = 'opacity 0.9s ease';
+        el.style.opacity = '0';
+        setTimeout(function() { el.classList.add('hidden'); if (cb) cb(); }, 950);
+    }
+    function fadeIn(el) {
+        el.style.opacity = '0';
+        el.classList.remove('hidden');
+        void el.offsetWidth;
+        el.style.transition = 'opacity 0.9s ease';
+        el.style.opacity = '1';
+    }
+    var splash  = document.getElementById('splash-screen');
+    var warning = document.getElementById('warning-screen');
+    var home    = document.getElementById('home-screen');
+    // Splash visible for 2.8s, then crossfade to warning for 4.5s, then home
+    setTimeout(function() {
+        fadeOut(splash, function() {
+            fadeIn(warning);
+            setTimeout(function() {
+                fadeOut(warning, function() { fadeIn(home); });
+            }, 4500);
+        });
+    }, 2800);
+})();
+
 // ── Night counter ─────────────────────────────────────────────────────────────
 var currentNight = parseInt(sessionStorage.getItem('hb_night') || '1');
 

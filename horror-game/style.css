@@ -338,6 +338,56 @@ body {
   animation: jsReveal 0.07s ease-out forwards;
 }
 
+/* ── Intro splash + warning ───────────────────────────────────── */
+#splash-screen,
+#warning-screen {
+  background: #000;
+  transition: opacity 0.9s ease;
+  cursor: default;
+  pointer-events: none;
+}
+
+#splash-text {
+  font-family: 'Creepster', cursive;
+  font-size: clamp(28px, 5.5vw, 62px);
+  font-weight: bold;
+  color: #cc0000;
+  text-shadow:
+    0 0 28px #ff000088,
+    0 0 60px #ff000044;
+  letter-spacing: 6px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#warning-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  max-width: 600px;
+  text-align: center;
+  border: 1px solid #3a1a00;
+  padding: 40px 48px;
+  background: rgba(10,6,0,0.7);
+}
+
+#warning-title {
+  font-family: 'Special Elite', monospace;
+  font-size: clamp(18px, 2.8vw, 28px);
+  font-weight: bold;
+  color: #e8a000;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+#warning-body {
+  font-family: 'Special Elite', monospace;
+  font-size: clamp(13px, 1.9vw, 17px);
+  color: #999;
+  line-height: 2;
+}
+
 /* ── Home screen ──────────────────────────────────────────────── */
 #home-screen {
   background: radial-gradient(ellipse at center, #0e0508 0%, #000 65%);
