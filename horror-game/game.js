@@ -1932,7 +1932,7 @@ function beginNight() {
         if(allCluesFound && !gamePaused && !nightDone){
             if(pz < -27.2 && Math.abs(px) < 3.5){
                 if(currentNight<3){ showNightClear(); }
-                else { gamePaused=true; solveBarEl.classList.add('hidden'); mysteryScreen.classList.remove('hidden'); }
+                else { gamePaused=true; solveBarEl.classList.add('hidden'); mysteryScreen.classList.remove('hidden'); try{document.exitPointerLock();}catch(e){} }
             }
         }
 
