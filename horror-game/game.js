@@ -187,7 +187,7 @@ var NIGHT_CLUES = [
     [
         { pos:{x:-18,z:22},  name:"Father's Journal", room:'Study',
           text:'"Oct 31\n\nWe hear them again. Below us.\nHeavy footsteps. From the basement we keep locked.\n\nWe are not going down there.\nMargaret agrees. The children don\'t know.\n\nOct 31 — later\n\nIt was quiet for an hour.\nThen it knocked back."' },
-        { pos:{x:18, z:22},  name:'Voice Memo Transcript', room:'Master Bedroom',
+        { pos:{x:23, z:21.5},  name:'Voice Memo Transcript', room:'Master Bedroom',
           text:'A cracked phone on the nightstand.\nLast voice memo, auto-transcribed:\n\n"…can\'t get the door open from inside…\nwe\'ve been here for two days…\nkids are with me… it\'s in the walls above us…\nplease… the basement… someone find us—"\n\n[Recording ends. 3:47 AM]' }
     ],
     [
