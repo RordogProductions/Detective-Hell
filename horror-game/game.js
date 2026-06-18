@@ -253,8 +253,6 @@ var ISTATE = 'home';
 // phoneScreen starts hidden; home screen shows first
 phoneScreen.classList.add('hidden');
 if (currentNight > 1) {
-    el('home-night-badge').classList.remove('hidden');
-    el('home-night-num').textContent = currentNight;
     el('home-btn').textContent = 'Continue Investigation';
 }
 
